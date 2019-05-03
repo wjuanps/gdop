@@ -1,0 +1,170 @@
+<div class="modal fade" id="dialogConsultaOcorrencia" tabindex="-1" role="dialog" aria-labelledby="modalConsultaOcorrencia" aria-hidden="true">
+  	<div class="modal-dialog modal-lg" role="document">
+    	<div class="modal-content">
+    		<div ng-repeat="ocorrencia in ocorrenciaCompleta">
+		      	<div class="modal-header bg-info modal-header-gdop bg-gdop">
+		        	<h5 class="modal-title" id="modalConsultaEnvolvidos">{{::'Ocorrência' +  ' - ' + ocorrencia.codigo}}</h5>
+		        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          		<span aria-hidden="true">&times;</span>
+		        	</button>
+	      		</div>
+		      	<div class="modal-body" style="max-height: 550px; overflow: auto;">
+		      		<div class="card">
+						<strong class="card-header">Dados da ocorrência</strong>
+					  	<div class="card-block">
+					  		<div class="row">
+					  			<div class="col-sm-7">
+					  				<span class="card-text">Tipo</span>
+					    			<p class="card-text form-text text-muted" ng-bind="::ocorrencia.tipo"></p>
+				    			</div>
+				    			<div class="col-sm-5">
+				    				<span class="card-text">Data e Hora</span>
+				    				<p class="card-text form-text text-muted" ng-bind="::ocorrencia.dataHora"></p>
+				    			</div>
+					    	</div>
+
+					    	<div class="row mt-3">
+					    		<div class="col-sm-4">
+					    			<span class="card-text">Área</span>
+					    			<p class="card-text form-text text-muted" ng-bind="::ocorrencia.bairro.area.nome"></p>
+					    		</div>
+					    		<div class="col-sm-4">
+					    			<span class="card-text">Bairro</span>
+					    			<p class="card-text form-text text-muted" ng-bind="::ocorrencia.bairro.nome"></p>
+					    		</div>
+					    		<div class="col-sm-4">
+						    		<span class="card-text">Rua</span>
+						    		<p class="card-text form-text text-muted" ng-bind="::ocorrencia.rua"></p>
+					    		</div>
+					    	</div>
+
+					    	<div class="row mt-3">
+					    		<div class="col-sm-6">
+						    		<span class="card-text">Descrição</span>
+						    		<p class="card-text form-text text-muted" ng-bind="::ocorrencia.descricao"></p>
+					    		</div>
+					    		<div class="col-sm-6">
+						    		<span class="card-text">Informações Complementares</span>
+						    		<p class="card-text form-text text-muted" ng-bind="::ocorrencia.informacoesComplementares"></p>
+					    		</div>
+					    	</div>
+					  	</div>
+					</div>
+
+					<div class="card mt-4">
+						<strong class="card-header">Dados do(s) envolvido(s)</strong>
+					  	<div class="card-block" ng-repeat="envolvido in ocorrencia.envolvidos">
+					  		<h5 class="card-sutitle" ng-bind="::envolvido.nome"></h5>
+					  		<hr class="hr" />
+					  		<div class="row">
+					  			<div class="col-sm-6">
+					  				<span class="card-text">Tipo</span>
+					  				<p class="card-text form-text text-muted" ng-bind="::envolvido.tipoEnvolvido"></p>
+					  			</div>
+					  			<div class="col-sm-6">
+					  				<span class="card-text">Data Nascimento</span>
+					  				<p class="card-text form-text text-muted" ng-bind="::envolvido.dataNascimento"></p>
+					  			</div>
+					  		</div>
+
+					  		<div class="row mt-3">
+					  			<div class="col-sm-6">
+					  				<span class="card-text">CPF</span>
+					  				<p class="card-text form-text text-muted" ng-bind="::envolvido.cpf"></p>
+					  			</div>
+					  			<div class="col-sm-6">
+					  				<span class="card-text">RG</span>
+					  				<p class="card-text form-text text-muted" ng-bind="::envolvido.rg"></p>
+					  			</div>
+					  		</div>
+
+					  		<div class="row mt-3">
+					  			<div class="col-sm-6">
+					  				<span class="card-text">Endereço</span>
+					  				<p class="card-text form-text text-muted" ng-bind="::envolvido.endereco"></p>
+					  			</div>
+					  			<div class="col-sm-6">
+					  				<span class="card-text">Número Contato</span>
+					  				<p class="card-text form-text text-muted" ng-bind="::envolvido.numContato"></p>
+					  			</div>
+					  		</div>
+					  	</div>
+					</div>
+
+					<div class="card mt-4" ng-if="!!ocorrencia.itensRoubo.length || !!ocorrencia.veiculos.length">
+						<strong class="card-header">Dados do(s) item(s) roubado/furtados(s)</strong>
+					  	<div class="card-block" ng-if="!!ocorrencia.veiculos.length">
+					  		<h5 class="card-sutitle">Veiculos</h5>
+					  		<hr class="hr" />
+					  		<div class="mt-4" ng-repeat="veiculo in ocorrencia.veiculos">
+					  			<div class="row">
+					  				<div class="col-sm-3">
+					  					<span class="card-text">Placa</span>
+					  					<p class="card-text form-text text-muted" ng-bind="::veiculo.placa"></p>
+					  				</div>
+					  				<div class="col-sm-3">
+					  					<span class="card-text">Tipo</span>
+					  					<p class="card-text form-text text-muted" ng-bind="::veiculo.modelo.marca.tipo"></p>
+					  				</div>
+					  				<div class="col-sm-3">
+					  					<span class="card-text">Marca</span>
+					  					<p class="card-text form-text text-muted" ng-bind="veiculo.modelo.marca.marca"></p>
+					  				</div>
+					  				<div class="col-sm-3">
+					  					<span class="card-text">Modelo</span>
+					  					<p class="card-text form-text text-muted" ng-bind="::veiculo.modelo.modelo"></p>
+					  				</div>
+					  			</div>
+
+					  			<div class="row mt-3">
+					  				<div class="col-sm-6">
+					  					<span class="card-text">Chassi</span>
+					  					<p class="card-text form-text text-muted" ng-bind="::veiculo.chassi"></p>
+					  				</div>
+					  				<div class="col-sm-6">
+					  					<span class="card-text">Cor</span>
+					  					<p class="card-text form-text text-muted" ng-bind="::veiculo.cor"></p>
+					  				</div>
+					  			</div>
+
+					  			<hr class="hr" />
+					  		</div>
+					  	</div>
+
+					  	<div class="card-block" ng-if="!!ocorrencia.itensRoubo.length">
+					  		<h5 class="card-sutitle">Outros</h5>
+					  		<hr class="hr" />
+							<div class="mt-4 pb-0">
+								<div class="row">
+									<div class="col-sm-9">
+										<span class="card-text">Item</span>
+									</div>
+									<div class="col-sm-3">
+					  					<span class="card-text">Quantidade</span>
+									</div>
+								</div>
+							</div>
+							<hr class="hr" />
+					  		<div class="mt-4" ng-repeat="itemRoubo in ocorrencia.itensRoubo">
+					  			<div class="row">
+					  				<div class="col-sm-9">
+					  					<p class="card-text form-text text-muted" ng-bind="::itemRoubo.item"></p>
+					  				</div>
+					  				<div class="col-sm-3">
+					  					<p class="card-text form-text text-muted" ng-bind="::itemRoubo.quantidade"></p>
+					  				</div>
+					  			</div>
+
+					  			<hr class="hr" />
+					  		</div>
+					  	</div>
+					</div>
+				</div>
+
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Fechar</button>
+	      		</div>
+      		</div>
+    	</div>
+  	</div>
+</div>

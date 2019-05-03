@@ -1,0 +1,83 @@
+<section class="section-gap achivement-area">
+	<div class="container" ng-controller="consultarEnvolvidosCtrl" ng-init="init()">
+		<h1>Consultar Envolvidos</h1>
+		<hr class="hr" />
+		<br /><br />
+
+		<div class="row">
+			<div class="col-sm-4 mt-2">
+				<div class="input-group-icon">
+					<div class="icon"><span class="fa fa-male"></span></div>
+					<input type="text" class="single-input" ng-model="filtro.nomeEnvolvido" placeholder="Nome envolvido">
+				</div>
+			</div>
+
+			<div class="col-sm-4 mt-2">
+				<div class="input-group-icon">
+					<div class="icon"><span class="lnr lnr-select"></span></div>
+					<select class="single-input form-control custom-select select-gdop" ng-model="filtro.tipo" ng-options="tipo for tipo in tiposEnvolvido">
+						<option value="">Tipo de Envolvido</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-sm-2 mt-2" ng-if="filtro.tipo === 'Acusado'">
+				<button class="genric-btn info medium btn-block">SISP</button>
+			</div>
+
+			<div class="col-sm-2 mt-2" ng-if="filtro.tipo === 'Acusado'">
+				<button class="genric-btn info medium btn-block">INFOPEN</button>
+			</div>
+		</div>
+
+		<div class="clearfix mt-4">
+			<button class="genric-btn danger medium bg-gdop float-left"><span class="fa fa-bar-chart-o"></span></button>
+			<button class="genric-btn info medium bg-gdop float-right" ng-click="pesquisarEnvolvido(filtro)"><span class="fa fa-search"></span></button>
+			<button class="genric-btn success medium bg-gdop float-right mr-2" ng-click="resetarFiltros()"><span class="fa fa-eraser"></span></button>
+		</div>
+
+		<hr class="hr">
+
+		<div class="alert alert-warning" ng-if="envolvidos.length <= 0 && !loading">
+			<strong class="f700">Nenhum registro encontrado.</strong>
+		</div>
+
+		<div class="row">
+			<img src="web/imagens/basicloader.gif" class="img-fluid mx-auto" ng-if="loading">
+		</div>
+
+		<div class="table-responsive">
+			<table class="table table-striped table-hover mt-4" ng-if="envolvidos.length > 0">
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>Nome</th>
+						<th>CPF</th>
+						<th>RG</th>
+						<th>Contato</th>
+						<th>Endereço</th>
+						<th>Data Nascimento</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="envolvido in envolvidos">
+						<td class="text-center" ng-bind="::envolvido.codigo"></td>
+						<td ng-bind="::envolvido.nome"></td>
+						<td ng-bind="::envolvido.cpf"></td>
+						<td ng-bind="::envolvido.rg"></td>
+						<td ng-bind="::envolvido.numContato"></td>
+						<td ng-bind="::envolvido.endereco"></td>
+						<td ng-bind="::envolvido.dataNascimento"></td>
+						<td class="text-center">
+							<button type="button" class="genric-btn info small bg-gdop btn-sm" data-toggle="modal" data-target="#dialogEnvolvido" data-whatever="@mdo"><span class="fa fa-external-link"></span></button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div ng-include="'web/view/includes/pagination.html'"></div>
+		
+	</div>
+</section>

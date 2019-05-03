@@ -1,0 +1,106 @@
+<section class="section-gap achivement-area" ng-controller="cadastroUsuarioCtrl" ng-init="initUsuarioEditar()">
+	<div class="container">
+		<h1>Cadastro Usuário</h1>
+		<hr class="hr" />
+		<br /><br />
+
+		<form name="formCadastro">
+			<div class="row d-flex justify-content-center">
+				<div class="col-sm-8">
+					<div class="input-group-icon">
+						<div class="icon"><i class="fa fa-font"></i></div>
+						<input type="text" class="single-input" id="nome" name="nome" ng-model="usuario.nome" ng-required="true" placeholder="Nome do Usuário" />
+					</div>
+
+					<div class="input-group-icon mt-15">
+						<div class="icon"><i class="fa fa-slack"></i></div>
+						<input type="text" class="single-input" name="postoGraduacao" id="postoGraduacao" ng-model="usuario.postoOuGraduacao" ng-required="true" placeholder="Posto ou Graduação do Usuário" />
+					</div>
+
+					<div class="mt-15">
+						<ul class="unordered-list ml-2">
+							<li class="text-danger" ng-if="rgMilitarInvalido">RG Militar já está cadastrado</li>
+							<li class="text-danger" ng-if="formCadastro.rgMilitar.$error.mask">RG Militar deve ter 5 (cinco) digitos</li>
+						</ul>
+						<div class="input-group-icon">
+							<div class="icon"><i class="fa fa-user"></i></div>
+							<input type="text" class="single-input" name="rgMilitar" id="rgMilitar" ng-model="usuario.rgMilitar" ng-required="true" placeholder="RG Militar do Usuário" mask="9" repeat="5" ng-blur="verificarDados('checkRGMilitar', formCadastro.rgMilitar)" />
+						</div>
+					</div>
+
+					<div class="mt-15">
+						<ul class="unordered-list ml-2" ng-if="emailInvalido">
+							<li class="text-danger">Email já está cadastrado</li>
+						</ul>
+
+						<div class="input-group-icon">
+							<div class="icon"><i class="fa fa-envelope"></i></div>
+							<input type="text" class="single-input" id="email" name="email" placeholder="Email do Usuário" ng-model="usuario.email" ng-pattern="/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/" ng-required="true" ng-blur="verificarDados('checkEmail', formCadastro.email)" />
+						</div>
+					</div>
+
+					<div class="mt-15" ng-if="!usuario.codigo">
+						<ul class="unordered-list ml-2" ng-if="formCadastro.senha.$error.minlength">
+							<li class="text-danger">A senha deve ter pelo menos 6 (seis) caracteres</li>
+						</ul>
+
+						<div class="input-group-icon">
+							<div class="icon"><i class="fa fa-key"></i></div>
+							<input type="password" class="single-input" id="senha" name="senha" minlength="6" placeholder="Senha do Usuário" ng-model="usuario.senha" ng-required="true" />
+						</div>
+					</div>
+
+					<div class="mt-15" ng-if="!!usuario.codigo">
+						<div class="row">
+							<div class="col-sm-6">
+								<ul class="unordered-list ml-2" ng-if="formCadastro.senhaAntiga.$error.minlength">
+									<li class="text-danger">A senha deve ter pelo menos 6 (seis) caracteres</li>
+								</ul>
+
+								<div class="input-group-icon">
+									<div class="icon"><i class="fa fa-key"></i></div>
+									<input type="password" class="single-input" name="senhaAntiga" id="senhaAntiga" ng-model="usuario.senhaAntiga" minlength="6" placeholder="Senha Antiga">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<ul class="unordered-list ml-2" ng-if="formCadastro.senhaNova.$error.minlength">
+									<li class="text-danger">A senha deve ter pelo menos 6 (seis) caracteres</li>
+								</ul>
+
+								<div class="input-group-icon">
+									<div class="icon"><i class="fa fa-key"></i></div>
+									<input type="password" class="single-input" name="senhaNova" id="senhaNova" ng-model="usuario.senhaNova" minlength="6" placeholder="Senha Nova">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="input-group-icon mt-15">
+						<div class="icon"><i class="fa fa-asterisk"></i></div>
+						<select class="single-input form-control custom-select select-gdop" ng-disabled="!!usuario.codigo && usuario.tipo != 'Administrador'" ng-model="usuario.tipo" id="tipo" name="tipo" ng-required="true">
+							<option value="">Tipo de Usuário</option>
+							<option value="Administrador">Administrador</option>
+							<option value="Atendente">Atendente</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row d-flex justify-content-center mt-20">
+				<div class="col-sm-8 clearfix">
+					<button type="button" class="btn btn-danger float-right" onclick="location.href='/gdop/'">Cancelar</button>
+					<button type="button" class="btn btn-success float-right mr-2" ng-click="cadastrarUsuario(usuario)" ng-disabled="formCadastro.$invalid || emailInvalido || rgMilitarInvalido || loading">Confirmar</button>
+					<img src="web/imagens/loader.gif" class="img-fluid float-right mr-4 mt-2" ng-if="loading">
+				</div>
+			</div>
+		</form>
+
+		<div class="row d-flex justify-content-center mt-20" ng-if="showMensagem">
+			<div class="col-sm-8">
+				<div class="alert alert-info">
+					<span class="f700" ng-bind="msg"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

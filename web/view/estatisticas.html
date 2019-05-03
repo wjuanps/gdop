@@ -1,0 +1,99 @@
+<section class="section-gap achivement-area" ng-controller="chartCtrl">
+	<div class="container" ng-controller="filtroOcorrenciaCtrl" ng-init="initFiltro(reset)">
+		<h1>Estatísticas</h1>
+		<hr class="hr" />
+		<br /><br />
+
+		<ul class="nav nav-tabs nav-pills nav-justified" role="tablist">
+		 	<li class="nav-item">
+		    	<a class="nav-link active" href="#ocorrencia" ng-click="changeChart(filtro, 'general')" data-toggle="tab" role="tab">Ocorrência</a>
+		 	</li>
+		 	<li class="nav-item">
+		    	<a class="nav-link" href="#crimes" ng-click="changeChart(filtro, 'serieTemporalCrimes')" data-toggle="tab" role="tab">Crimes</a>
+		 	</li>
+		</ul>
+
+		<div class="tab-content">
+		 	<div class="tab-pane active show fade" id="ocorrencia" role="tabpanel">
+		 		<div class="mt-4" ng-include="'web/view/includes/filtro-ocorrencia.html'"></div>
+
+		 		<div class="clearfix mt-4">
+		 			<button class="genric-btn info medium bg-gdop float-right" ng-click="gerarGraficos(filtro, 'general')"><span class="fa fa-search"></span></button>
+		 			<button class="genric-btn success medium bg-gdop float-right mr-2" ng-click="resetarFiltros(reset)"><span class="fa fa-eraser"></span></button>
+		 		</div>
+
+		 		<hr class="hr" />
+
+		 		<div class="alert alert-warning mt-4" ng-if="charts.length <= 0 && !loading">
+		 			<strong class="f700">Nenhum registro encontrado</strong>
+		 		</div>
+
+ 				<div class="row" ng-if="charts.length > 0 && !loading">
+ 			      	<div class="col-sm-6 mt-4" ng-repeat="chart in charts">
+ 			      		<div class="card">
+ 			      		 	<h4 class="card-header" ng-bind="::chart.label"></h4>
+ 			      		 	<div class="card-block">
+ 		      		    		<canvas id="{{::chart.element}}"></canvas>
+ 			      		  	</div>
+ 			      		</div>
+ 			      	</div>
+ 			    </div>
+		 	</div>
+
+		 	<div class="tab-pane fade mt-4" id="crimes" role="tabpanel">
+		 		<div class="row">
+		 			<div class="col-sm-3 mt-2">
+		 				<div class="input-group-icon">
+		 					<div class="icon"><span class="lnr lnr-select"></span></div>
+		 					<select class="single-input form-control custom-select select-gdop" ng-model="filtro.tipo" ng-options="tipo for tipo in tipos">
+		 						<option value="">Tipo</option>
+		 					</select>
+		 				</div>
+		 			</div>
+		 			<div class="col-sm-3 mt-2">
+		 				<div class="input-group-icon">
+		 					<div class="icon"><span class="lnr lnr-select"></span></div>
+		 					<select class="single-input form-control custom-select select-gdop" ng-model="filtro.area" ng-options="area for area in areas" ng-change="getBairros(filtro.area)">
+		 						<option value="">Área</option>
+		 					</select>
+		 				</div>
+		 			</div>
+		 			<div class="col-sm-3 mt-2">
+		 				<div class="input-group-icon">
+		 					<div class="icon"><span class="lnr lnr-select"></span></div>
+		 					<select class="single-input form-control custom-select select-gdop" ng-model="filtro.bairro" ng-options="bairro.nome as bairro.nome for bairro in bairros">
+		 						<option value="">Bairro</option>
+		 					</select>
+		 				</div>
+		 			</div>
+		 			
+		 			<div class="col-sm-3 mt-2">
+		 				<div class="input-group-icon" moment-picker="filtro.anoPeriodo" format="YYYY" locale="pt-br">
+		 					<div class="icon"><span class="lnr lnr-calendar-full"></span></div>
+		 					<input type="text" class="single-input" ng-model="filtro.anoPeriodo" ng-model-options="{updateOn: 'blur'}" readonly="true" placeholder="Ano Período" />
+		 				</div>
+		 			</div>
+		 		</div>
+
+		 		<div class="clearfix mt-4">
+		 			<button class="genric-btn info medium bg-gdop float-right" ng-click="gerarGraficos(filtro, 'serieTemporalCrimes')"><span class="fa fa-search"></span></button>
+		 			<button class="genric-btn success medium bg-gdop float-right mr-2" ng-click="resetarFiltros(reset)"><span class="fa fa-eraser"></span></button>
+		 		</div>
+
+		 		<hr class="hr" />
+
+		 		<div class="alert alert-warning mt-4" ng-if="lineChart.length <= 0 && !loading">
+		 			<strong class="f700">Nenhum registro encontrado</strong>
+		 		</div>
+		 		
+		 		<canvas id="chart-line" ng-if="lineChart.length > 0 && !loading"></canvas>
+		 	</div>
+		 	
+		</div>
+
+		<div class="row">
+			<img src="web/imagens/basicloader.gif" class="img-fluid mx-auto" ng-if="loading">
+		</div>
+
+	</div>
+</section>

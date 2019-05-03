@@ -1,0 +1,50 @@
+<section class="section-gap achivement-area">
+	<div class="container">
+		<h1>Faça seu login</h1>
+		<hr class="hr" />
+		<br /><br />
+		
+		<form name="formLogin">
+
+			<div class="row">
+				<div class="col-sm-6 mx-auto">
+					<div class="alert alert-danger" role="alert" ng-if="erroNoLogin">
+						<span class="f700">RG Militar ou Senha inválida</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6 mx-auto">
+					<div class="form-group input-group">
+						<span class="input-group-addon bg-gdop" id="usuario"><span class="fa fa-user"></span></span>
+				    	<input type="text" class="form-control" id="rg" placeholder="RG Militar" name="rg" ng-required="true" mask="9" repeat="5" ng-model="usuario.rgMilitar" aria-describedby="usuario" />
+				    </div>
+
+				    <div class="form-group input-group">
+				    	<span class="input-group-addon bg-gdop" id="password"><span class="fa fa-unlock"></span></span>
+				       	<input type="password" class="form-control" id="senha" placeholder="Senha" name="senha" ng-required="true" ng-model="usuario.senha" aria-describedby="password" minlength="6" />
+				    </div>
+				    <div class="form-group">
+				    	<button type="submit" class="btn btn-info btn-block" 
+		    				ng-click="logarNoSistema(usuario)" ng-disabled="formLogin.$invalid">
+		    				<span>Acessar Sistema</span>  <span class="icon ion-log-in"></span>
+	    				</button>
+				    </div>
+			    </div>
+		    </div>
+
+    		<div class="row">
+		    	<div class="col-sm-6 mx-auto">
+		    		<a href="">Esqueceu sua senha?</a>
+		    	</div>
+		    </div>
+		    	
+		    <div class="row">
+		    	<div class="col-sm-6 mx-auto">
+		    		<img src="web/imagens/basicloader.gif" class="img-fluid mx-auto d-block" ng-if="loading" />
+		    	</div>
+		    </div>
+		</form>
+	</div>
+</section>

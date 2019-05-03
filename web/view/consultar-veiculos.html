@@ -1,0 +1,88 @@
+<section class="section-gap achivement-area">
+	<div class="container" ng-controller="consultarVeiculosCtrl" ng-init="init()">
+		<h1>Consultar Veiculos</h1>
+		<hr class="hr" />
+		<br /><br />
+
+		<div class="row">
+			<div class="col-sm-3 mt-2">
+				<div class="input-group-icon">
+					<div class="icon"><span class="lnr lnr-select"></span></div>
+					<select class="single-input form-control custom-select select-gdop" ng-model="filtro.tipo" ng-options="tipo for tipo in tipos" ng-change="getMarcas(filtro.tipo)">
+						<option value="">Tipo</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3 mt-2">
+				<div class="input-group-icon">
+					<div class="icon"><span class="lnr lnr-select"></span></div>
+					<select class="single-input form-control custom-select select-gdop" ng-model="filtro.marca" ng-options="marca.marca as marca.marca for marca in marcas" ng-change="getModelos(filtro.marca)">
+						<option value="">Marca</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3 mt-2">
+				<div class="input-group-icon">
+					<div class="icon"><span class="lnr lnr-select"></span></div>
+					<select class="single-input form-control custom-select select-gdop" ng-model="filtro.modelo" ng-options="modelo.modelo as modelo.modelo for modelo in modelos">
+						<option value="">Modelo</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3 mt-2">
+				<div class="input-group-icon">
+					<div class="icon"><span class="lnr lnr-car"></span></div>
+					<input type="text" class="single-input" ng-model="filtro.placa" placeholder="Placa">
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix mt-4">
+			<button class="genric-btn info medium bg-gdop float-left mr-2" title="Buscar no DETRAN"><span class="fa fa-search-plus"></span></button>
+			<button class="genric-btn danger medium bg-gdop float-left"><span class="fa fa-bar-chart-o"></span></button>
+			<button class="genric-btn info medium bg-gdop float-right" ng-click="filtrar(filtro)" title="Buscar no GdOP"><span class="fa fa-search"></span></button>
+			<button class="genric-btn success medium bg-gdop float-right mr-2" ng-click="resetarFiltro(filtro)"><span class="fa fa-eraser"></span></button>
+		</div>
+
+		<hr class="hr">
+
+		<div class="alert alert-warning" ng-if="veiculos.length <= 0 && !loading">
+			<strong class="f700">Nenhum registro encontrado.</strong>
+		</div>
+
+		<div class="row">
+			<img src="web/imagens/basicloader.gif" class="img-fluid mx-auto" ng-if="loading">
+		</div>
+
+		<div class="table-responsive">
+			<table class="table table-hover table-striped mt-4" ng-if="veiculos.length > 0">
+				<thead>
+					<tr>
+						<th title="Código do Veículo">Código</th>
+						<th title="Tipo do Veículo">Tipo</th>
+						<th title="Marca do Veículo">Marca</th>
+						<th title="Modelo do Veículo">Modelo</th>
+						<th title="Placa do Veículo">Placa</th>
+						<th title="Chassi do Veículo">Chassi</th>
+						<th title="Cor do Veículo">Cor</th>
+						<th title="Número do Proprietário">Proprietário</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="veiculo in veiculos">
+						<td class="text-center" title="Código do Veículo" ng-bind="::veiculo.codigo"></td>
+						<td title="Tipo do Veículo" ng-bind="::veiculo.modelo.marca.tipo"></td>
+						<td title="Marca do Veículo" ng-bind="::veiculo.modelo.marca.marca"></td>
+						<td title="Modelo do Veículo" ng-bind="::veiculo.modelo.modelo"></td>
+						<td title="Placa do Veículo" ng-bind="::veiculo.placa"></td>
+						<td title="Chassi do Veículo" ng-bind="::veiculo.chassi"></td>
+						<td title="Cor do Veículo" ng-bind="::veiculo.cor"></td>
+						<td title="Número do Proprietário" ng-bind="::veiculo.numProprietario"></td>
+						<td class="text-center"><button class="genric-btn info small btn-info bg-gdop"><span class="fa fa-external-link"></span></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>

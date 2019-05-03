@@ -1,0 +1,136 @@
+<div class="modal fade" id="dialogVeiculos" tabindex="-1" role="dialog" aria-labelledby="modalVeiculos" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+    		<form name="formVeiculo">
+		      	<div class="modal-header">
+		        	<h5 class="modal-title" id="modalVeiculos">Adicionar Veiculos</h5>
+		        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          		<span aria-hidden="true">&times;</span>
+		        	</button>
+	      		</div>
+		      	<div class="modal-body">
+		      		<div class="row">
+		      			<div class="col-sm-8 mb-2">
+		      				<div class="input-group-icon">
+		      					<div class="input-group">
+		      						<div class="icon"><span class="fa fa-car"></span></div>
+	      							<input type="text" class="single-input text-uppercase" ng-model="placaVeiculo" mask="@@@-9999" ng-keyup="pesquisarVeiculo($event, placaVeiculo)" placeholder="Pesquisar Veiculos" name="search">
+	      							<span class="input-group-btn">
+	      						  	<button class="btn btn-info bg-gdop" ng-click="pesquisarVeiculo(null, placaVeiculo)" type="button"><sapn class="fa fa-search"></span></button>
+	      							</span>
+		      					</div>
+		      				</div>
+					    </div>
+					    <div class="col-sm-4 text-center mb-2">
+					    	<img src="web/imagens/loader.gif" class="img-fluid" ng-if="loading">
+					    </div>
+		      		</div>
+
+		      		<div class="alert alert-warning" role="alert" ng-if="showAlertVeiculo && dados['veiculos'].length <= 0">
+					  	<strong>Nenhum registro encontrado.</strong>
+					</div>
+
+		      		<div class="row" ng-if="dados['veiculos'].length > 0">
+		      			<div class="col-sm-12">
+			      			<div class="table-responsive">
+				      			<table class="table table-striped table-hover">
+				      				<thead>
+				      					<tr>
+				      						<th>Tipo</th>
+				      						<th>Modelo</th>
+				      						<th>Cor</th>
+				      						<th>Placa</th>
+				      						<th></th>
+				      					</tr>
+				      				</thead>
+				      				<tbody>
+				      					<tr ng-repeat="veiculo in dados['veiculos']">
+				      						<td ng-bind="::veiculo.modelo.marca.tipo"></td>
+				      						<td ng-bind="::veiculo.modelo.modelo"></td>
+				      						<td ng-bind="::veiculo.cor"></td>
+				      						<td ng-bind="::veiculo.placa"></td>
+				      						<td class="text-center"><button class="genric-btn success small" ng-click="adicionarVeiculo(veiculo)"><span class="fa fa-check-square-o"></span></button></td>
+				      					</tr>
+				      				</tbody>
+				      			</table>
+			      			</div>
+		      			</div>
+		      		</div>
+
+		      		<hr class="hr" />
+
+		      		<div class="row mt-3">
+		      			<div class="col-sm-12">
+			      			<div class="input-group-icon">
+			      				<div class="icon"><span class="fa fa-car"></span></div>
+			      				<input type="text" id="inPlacaVeiculo" class="single-input" ng-class="{'text-uppercase': !formVeiculo.placa.$error.required}" ng-model="veiculo.placa" ng-required="true" mask="@@@-9999" name="placa" placeholder="Placa do Veiculo" />
+			      			</div>
+		      			</div>
+		      		</div>
+
+		      		<div class="row mt-3">
+		      			<div class="col-sm-12">
+			      			<div class="input-group-icon">
+			      				<div class="icon"><span class="lnr lnr-select"></span></div>
+		      					<select class="single-input form-control custom-select select-gdop" id="inTipoVeiculo" ng-model="veiculo.modelo.marca.tipo" ng-change="change('marcas', veiculo.modelo.marca.tipo)" ng-options="tipo for tipo in dados['tiposVeiculo']" ng-required="true" name="tipo">
+			      				<option value="">Selecione o tipo do veículo</option>
+			      				</select>
+			      			</div>
+		      			</div>
+		      		</div>
+		      		
+		      		<div class="row mt-3">
+		      			<div class="col-sm-12">
+			      			<div class="input-group-icon">
+			      				<div class="icon"><span class="lnr lnr-select"></span></div>
+				      			<select class="single-input form-control custom-select select-gdop" id="inMarcaVeiculo" ng-model="marca" ng-change="change('modelos', marca.marca)" ng-options="marca.marca for marca in dados['marcas']" ng-required="true" name="marca">
+				      				<option value="">Selecione a marca do veículo</option>
+				      			</select>
+			      			</div>
+		      			</div>
+		      		</div>
+
+		      		<div class="row mt-3">
+		      			<div class="col-sm-12">
+			      			<div class="input-group-icon">
+			      				<div class="icon"><span class="lnr lnr-select"></span></div>
+				      			<select class="single-input form-control custom-select select-gdop" id="inModeloVeiculo" ng-model="veiculo.modelo" ng-options="modelo.modelo for modelo in dados['modelos']" ng-required="true" name="modelo">
+				      				<option value="">Selecione o modelo do veículo</option>
+				      			</select>
+			      			</div>
+		      			</div>
+		      		</div>
+		      		
+		      		<div class="row mt-3">
+		      			<div class="col-sm-12">
+			      			<div class="input-group-icon">
+			      				<div class="icon"><span class="fa fa-slack"></span></div>
+			      				<input type="text" id="inChassiVeiculo" class="single-input" ng-class="{'text-uppercase': !formVeiculo.chassi.$error.required}" mask="%" repeat="17" ng-model="veiculo.chassi" ng-required="true" name="chassi" placeholder="Chassi do Veiculo" />
+			      			</div>
+		      			</div>
+		      		</div>
+
+		      		<div class="row mt-3">
+		      			<div class="col-sm-12">
+			      			<div class="input-group-icon">
+			      				<div class="icon"><span class="fa fa-adjust"></span></div>
+				      			<select class="single-input form-control custom-select select-gdop" id="corVeiculo" ng-model="veiculo.cor" ng-options="cor for cor in dados['coresVeiculos']" ng-required="true" name="cor">
+				      				<option value="">Selecione a cor do veículo</option>
+				      			</select>
+			      			</div>
+		      			</div>
+		      		</div>
+
+	      		</div>
+
+	      		<div class="modal-footer">
+	      			<img src="web/imagens/loader.gif" class="img-fluid" ng-if="loading">
+	        		<button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+	        		<button type="button" class="btn btn-success" ng-click="cadastrarVeiculo(veiculo)" ng-disabled="formVeiculo.$invalid">
+	        			Cadastrar
+        			</button>
+	      		</div>
+      		</form>
+    	</div>
+  	</div>
+</div>

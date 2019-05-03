@@ -1,0 +1,58 @@
+<section class="section-gap achivement-area" ng-controller="consultaOcorrenciaCtrl">
+	<div class="container" ng-controller="filtroOcorrenciaCtrl" ng-init="initFiltro(filtrar)">
+		<h1>Consultar Ocorrências</h1>
+		<hr class="hr" />
+		<br /><br />
+
+		<div ng-include="'web/view/includes/filtro-ocorrencia.html'"></div>
+
+		<div class="clearfix mt-4">
+			<a href="estatisticas#!#ocorrencia" class="genric-btn danger medium bg-gdop float-left"><span class="fa fa-bar-chart-o"></span></a>
+			<button class="genric-btn info medium bg-gdop float-right" ng-click="filtrar(filtro, false)"><span class="fa fa-search"></span></button>
+			<button class="genric-btn success medium bg-gdop float-right mr-2" ng-click="resetarFiltros(filtrar)"><span class="fa fa-eraser"></span></button>
+		</div>
+
+		<hr class="hr" />
+
+		<div class="alert alert-warning mt-4" ng-if="ocorrencias.length <= 0 && !loading">
+			<strong class="f700">Nenhum registro encontrado</strong>
+		</div>
+
+		<div class="row">
+			<img src="web/imagens/basicloader.gif" class="img-fluid mx-auto" ng-if="loading">
+		</div>
+
+		<div class="table-responsive">
+			<table width="100%" class="table table-striped table-hover mt-4" ng-if="ocorrencias.length > 0 && !loading">
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>Tipo</th>
+						<th>Área</th>
+						<th>Bairro</th>
+						<th>Rua</th>
+						<th>Data</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="ocorrencia in ocorrencias">
+						<td class="text-center" ng-bind="::ocorrencia.codigo"></td>
+						<td ng-bind="::ocorrencia.tipo"></td>
+						<td ng-bind="::ocorrencia.bairro.area.nome"></td>
+						<td ng-bind="::ocorrencia.bairro.nome"></td>
+						<td ng-bind="::ocorrencia.rua"></td>
+						<td ng-bind="::ocorrencia.dataHora"></td>
+						<td class="text-center">
+							<button type="button" class="genric-btn info small bg-gdop btn-sm" title="Visualizar ocorrência completa" ng-click="detalharOcorrencia(ocorrencia.codigo)" data-toggle="modal" data-target="#dialogConsultaOcorrencia" data-whatever="@mdo"><span class="fa fa-external-link"></span></button>
+
+							<button ng-if="usuarioLogado.tipo === 'Administrador'" type="button" class="genric-btn success small bg-gdop btn-sm mt-1" title="Editar ocorrência" ng-click="editarOcorrencia(ocorrencia.codigo)"><span class="fa fa-edit"></span></button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div ng-include="'web/view/includes/dialog-consultar-ocorrencia.html'"></div>
+	</div>
+</section>

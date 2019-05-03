@@ -1,0 +1,44 @@
+<div class="row">
+	<div class="col-sm-2 mt-2">
+		<div class="input-group-icon">
+			<div class="icon"><span class="lnr lnr-select"></span></div>
+			<select class="single-input form-control custom-select select-gdop" ng-model="filtro.tipo" ng-options="tipo for tipo in tipos">
+				<option value="">Tipo</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-sm-2 mt-2">
+		<div class="input-group-icon">
+			<div class="icon"><span class="lnr lnr-select"></span></div>
+			<select class="single-input form-control custom-select select-gdop" ng-model="filtro.area" ng-options="area for area in areas" ng-change="getBairros(filtro.area)">
+				<option value="">Área</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-sm-2 mt-2">
+		<div class="input-group-icon">
+			<div class="icon"><span class="lnr lnr-select"></span></div>
+			<select class="single-input form-control custom-select select-gdop" ng-model="filtro.bairro" ng-options="bairro.nome as bairro.nome for bairro in bairros">
+				<option value="">Bairro</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-sm-2 mt-2">
+		<div class="input-group-icon">
+			<div class="icon"><span class="lnr lnr-map-marker"></span></div>
+			<input type="text" class="single-input" ng-model="filtro.rua" placeholder="Rua">
+		</div>
+	</div>
+	<div class="col-sm-2 mt-2">
+		<div class="input-group-icon" moment-picker="filtro.dataInicial" format="DD/MM/YYYY HH:mm" locale="pt-br">
+			<div class="icon"><span class="lnr lnr-calendar-full"></span></div>
+			<input type="text" class="single-input" ng-model="filtro.dataInicial" ng-model-options="{updateOn: 'blur'}" readonly="true" placeholder="Data Inicial" />
+		</div>
+	</div>
+	<div class="col-sm-2 mt-2">
+		<div class="input-group-icon" moment-picker="filtro.dataFinal" format="DD/MM/YYYY HH:mm" locale="pt-br">
+			<div class="icon"><span class="lnr lnr-calendar-full"></span></div>
+			<input type="text" class="single-input" ng-model="filtro.dataFinal" ng-model-options="{updateOn: 'blur'}" readonly="true" placeholder="Data Final" />
+		</div>
+	</div>
+</div>

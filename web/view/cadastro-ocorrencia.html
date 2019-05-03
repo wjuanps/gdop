@@ -1,0 +1,228 @@
+<section class="section-gap achivement-area">
+	<div class="container" ng-controller="cadastroOcorrenciaCtrl" ng-init="init(showGraficos)">
+		<h1>Cadastrar Ocorrência</h1>
+		<hr class="hr" />
+		<br /><br />
+		
+		<h3>Dados da Ocorrência</h3>
+		<hr class="hr" />
+		
+		<form name="formOcorrencia">
+			<div class="row mb-3 mt-5">
+				<div class="col-sm-8 mb-3">
+					<div class="input-group-icon">
+						<div class="icon"><span class="lnr lnr-select"></span></div>
+						<select class="single-input form-control custom-select select-gdop" id="inTipo" name="inTipo" ng-model="ocorrencia.tipo" ng-options="tipoOcorrencia for tipoOcorrencia in dados['tiposOcorrencia']" ng-change="setFurtoRoubo(ocorrencia.tipo)" ng-required="true">
+							<option value="">Selecione o tipo da ocorrência</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="col-sm-4">
+	  				<div class="input-group-icon" moment-picker="ocorrencia.dataHora" format="DD/MM/YYYY HH:mm" locale="pt-br">
+	  					<div class="icon"><span class="lnr lnr-calendar-full"></span></div>
+						<input type="text" id="inDataHora" class="single-input" ng-model="ocorrencia.dataHora" ng-model-options="{updateOn: 'blur'}" name="nascimento" readonly ng-required="true" placeholder="Data e Hora" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-3 mt-3" ng-if="isFurtoRoubo">
+				<fieldset class="col-sm-12 form-group">
+					<h3>Itens Roubados/Furtados</h3>
+					<hr class="hr" />
+
+					<div class="row mb-4">
+						<div class="col-sm-2">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" ng-click="removerVeiculos(showVeiculo)" ng-model="showVeiculo">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Veiculo</span>
+							</label>
+						</div>
+
+						<div class="col-sm-2">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" ng-click="removerItensRoubados(showOutros)" ng-model="showOutros">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Outros</span>
+							</label>
+						</div>
+					</div>
+
+					<div ng-if="showVeiculo" class="mb-4">
+						<h5>Veiculos</h5>
+						<hr class="hr" />				
+
+						<div class="table-responsive">
+							<table class="table table-striped table-hover" ng-if="ocorrencia.veiculos.length > 0">
+								<thead>
+									<tr>
+										<th>Tipo</th>
+										<th>Marca</th>
+										<th>Modelo</th>
+										<th>Placa</th>
+										<th>Cor</th>
+										<th>Chassi</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="veiculo in ocorrencia.veiculos">
+										<td ng-bind="::veiculo.modelo.marca.tipo"></td>
+			      						<td ng-bind="::veiculo.modelo.marca.marca"></td>
+			      						<td ng-bind="::veiculo.modelo.modelo"></td>
+			      						<td ng-bind="::veiculo.placa"></td>
+			      						<td ng-bind="::veiculo.cor"></td>
+			      						<td ng-bind="::veiculo.chassi"></td>
+										<td class="text-center"><button class="genric-btn small primary" ng-click="removerVeiculo(veiculo)"><span class="fa fa-minus-circle"></span></button></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<button class="genric-btn info small btn-sm bg-gdop" type="button" data-toggle="modal" data-target="#dialogVeiculos" data-whatever="@mdo" ng-click="initVeiculo()">
+							Adicionar Veiculo
+						</button>
+					</div>
+
+					<div ng-if="showOutros">
+						<h5>Outros</h5>
+						<hr class="hr" />
+
+						<div class="form-group row" ng-repeat="itemRoubado in ocorrencia.itensRoubo">
+					        <div class="col-sm-8 mb-2">
+					        	<div class="input-group-icon">
+					        		<div class="icon"><span class="fa fa-list-ul"></span></div>
+						            <select class="single-input form-control custom-select select-gdop" ng-model="itemRoubado.item" ng-options="item for item in dados['itensRoubo']" ng-change="toggleItensRoubo(ocorrencia.itensRoubo)" name="item" ng-required="true">
+						                <option value="">Selecione o item</option>
+						            </select>
+						        </div>
+					        </div>
+
+					        <div class="col-sm-2 mb-2">
+					        	<div class="input-group-icon">
+					        		<div class="icon"><span class="fa fa-slack"></span></div>
+					            	<input class="single-input" type="number" min="0" max="1000" ng-model="itemRoubado.quantidade" name="quantidade" ng-keyup="toggleItensRoubo(ocorrencia.itensRoubo)" ng-change="toggleItensRoubo(ocorrencia.itensRoubo)" ng-required="true" />
+					        	</div>
+					        </div>
+					        
+					        <div class="col-sm-1 mb-2">
+					            <button class="btn btn-block btn-danger btn-md bg-gdop" ng-click="removerItemRoubo(itemRoubado, ocorrencia.itensRoubo)" ng-disabled="ocorrencia.itensRoubo.length == 1 && itemRoubado.quantidade == 0 && !itemRoubado.item"><span class="fa fa-minus-circle"></span></button>        
+					        </div>
+					        <!--  -->
+					        <div class="col-sm-1">
+					            <button class="btn btn-block btn-success btn-md bg-gdop" ng-click="adicionarItemRoubo({item: '', quantidade: 0})" ng-if="(ocorrencia.itensRoubo.length - 1) == ocorrencia.itensRoubo.indexOf(itemRoubado)" ng-disabled="!itemRoubado.item || !itemRoubado.quantidade" type="button"><span class="fa fa-plus-circle"></span></button>
+					        </div>
+					    </div>
+					</div>
+				</fieldset>
+			</div>
+
+			<div class="row mb-1">
+				<div class="col-sm-6 mb-4">
+					<div class="input-group-icon">
+						<div class="icon"><span class="fa fa-thumb-tack"></span></div>
+						<select id="inArea" class="single-input form-control custom-select select-gdop" ng-model="area" ng-options="area for area in dados['areas']" ng-change="change('bairros', area)" ng-required="true">
+						<option value="">Selecione a área</option>
+					</select>
+					</div>
+				</div>
+				
+				<div class="col-sm-6">
+					<div class="input-group-icon">
+						<div class="icon"><span class="fa fa-plane"></span></div>
+						<select id="inBairro" class="single-input form-control custom-select select-gdop" ng-model="ocorrencia.bairro" ng-options="bairro.nome as bairro.nome for bairro in dados['bairros']" ng-required="true">
+							<option value="">Selecione o bairro</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col-sm-12">
+					<div class="input-group-icon">
+						<div class="icon"><span class="fa fa-map-marker"></span></div>
+						<input type="text" id="inEndereco" class="single-input" placeholder="Endereço" ng-model="ocorrencia.rua" ng-keyup="keyUp()" ng-required="true" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col-sm-12">
+					<div class="input-group-icon">
+						<div class="icon"><span class="fa fa-edit"></span></div>
+						<textarea rows="5" class="single-input" id="inDescricao" ng-model="ocorrencia.descricao" ng-keyup="keyUp()" ng-required="true" placeholder="Descrição"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col-sm-12">
+					<div class="input-group-icon">
+						<div class="icon"><span class="fa fa-edit"></span></div>
+						<textarea rows="5" class="single-input" id="inInfoComp" ng-model="ocorrencia.informacoesComplementares" ng-keyup="keyUp()" ng-required="true" placeholder="Informações Complementares"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-3 mt-5">
+				<fieldset class="col-sm-12 form-group">
+					<h3>Envolvidos</h3>
+					<hr class="hr" />
+					
+					<div class="table-responsive">
+						<table class="table table-striped table-hover" ng-if="ocorrencia.envolvidos.length > 0">
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>Tipo</th>
+									<th>CPF</th>
+									<th>RG</th>
+									<th>Endereço</th>
+									<th>Número Contato</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="envolvido in ocorrencia.envolvidos">
+									<td ng-bind="::envolvido.nome"></td>
+									<td ng-bind="::envolvido.tipoEnvolvido"></td>
+									<td ng-bind="::envolvido.cpf"></td>
+									<td ng-bind="::envolvido.rg"></td>
+									<td ng-bind="::envolvido.endereco"></td>
+									<td ng-bind="::envolvido.numContato"></td>
+									<td class="text-center"><button class="genric-btn primary small" ng-click="removerEnvolvido(envolvido)"><span class="fa fa-minus-circle"></span></button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<button class="genric-btn info small btn-sm bg-gdop" type="button" data-toggle="modal" data-target="#dialogEnvolvidos" data-whatever="@mdo" ng-click="initEnvolvidos()">
+						Adicionar Envolvido
+					</button>
+				</fieldset>
+			</div>
+			
+			<div class="alert alert-warning switch-wrap d-flex justify-content-between bg-gdop col-sm-3 gdop-trote" ng-click="ocorrencia.trote=!ocorrencia.trote">
+				<p class="f700">Marcar como trote</p>
+				<div class="confirm-switch">
+					<input type="checkbox" id="trote" ng-model="ocorrencia.trote">
+					<label for="trote"></label>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<img src="web/imagens/loader.gif" class="img-fluid" ng-if="loading">
+				<button class="btn btn-danger bg-gdop col-sm-2" ng-click="redirect()" type="button">Cancelar</button>
+				<button class="btn btn-success bg-gdop col-sm-2" ng-disabled="!disabled" ng-click="cadastrarOcorrencia(ocorrencia)" type="button">Confirmar</button>
+			</div>
+		</form>
+
+		<div class="alert alert-success mt-4" ng-if="ocorrencia.success">
+			<strong class="f700" ng-bind="::message"></strong>
+		</div>
+
+		<div ng-include="'web/view/includes/dialog-envolvido.html'"></div>
+		<div ng-include="'web/view/includes/dialog-veiculo.html'"></div>
+	</div>
+</section>

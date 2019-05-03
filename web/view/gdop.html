@@ -1,0 +1,107 @@
+<section class="section-gap achivement-area">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-5">
+				<div class="achivement-content">
+					<h2>Sobre Nós</h2>
+					<p class="mb-30">Few would argue that, despite the advancements of feminism over the past three decades, women still face a double standard when it comes to their behavior. While men’s borderline-inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct </p>
+					<a href="sobre" class="primary-btn">Saiba Mais<span class="lnr lnr-arrow-right"></span></a>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="total-achivement" ng-if="!!usuarioLogado">
+					<div class="row">
+						<div class="col-md-4 col-sm-6">
+							<div class="single-achivement">
+								<a href="cadastro-ocorrencia" class="achivement-link">
+									<i class="fa fa-edit"></i>
+								</a>
+								<h6><a href="cadastro-ocorrencia">Cadastrar Ocorrência</a></h6>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-achivement">
+								<a href="consultar-ocorrencias" class="achivement-link">
+									<i class="fa fa-filter"></i>
+								</a>
+								<h6><a href="consultar-ocorrencias">Consultar Ocorrências</a></h6>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-achivement">
+								<a href="consultar-veiculos" class="achivement-link">
+									<i class="fa fa-car"></i>
+								</a>
+								<h6><a href="consultar-veiculos">Consultar Veículos</a></h6>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-achivement">
+								<a href="consultar-envolvidos" class="achivement-link">
+									<i class="fa fa-group"></i>
+								</a>
+								<h6><a href="consultar-envolvidos">Consultar Envolvidos</a></h6>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-achivement">
+								<a href="estatisticas#!#ocorrencia" class="achivement-link">
+									<i class="fa fa-bar-chart-o"></i>
+								</a>
+								<h6><a href="estatisticas#!#ocorrencia">Estatísticas</a></h6>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-achivement">
+								<a href="#" ng-click="deslogar()" class="achivement-link">
+									<i class="fa fa-sign-out"></i>
+								</a>
+								<h6><a href="#" ng-click="deslogar()">Sair</a></h6>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="subscription-area mt-5" ng-if="!usuarioLogado">
+					<div class="row justify-content-end">
+						<div class="col-sm-10">
+							<div id="mc_embed_signup">
+								<form name="formLogin" class="subscription">
+
+									<div class="row">
+										<div class="col-sm-12 mx-auto">
+											<div class="alert alert-danger" role="alert" ng-if="erroNoLogin">
+												<span class="f700">RG Militar ou Senha inválida</span>
+											</div>
+										</div>
+									</div>
+
+									<div class="row mt-2">
+										<div class="col-sm-12">
+											<input type="text" name="rgMilitar" mask="9" repeat="5" ng-model="usuario.rgMilitar" placeholder="RG Militar" onfocus="this.placeholder = ''" onblur="this.placeholder = 'RG Militar'" ng-required="true">
+										</div>
+									</div>
+
+									<div class="row mt-2">
+										<div class="col-sm-12">
+											<input type="password" name="senha" ng-model="usuario.senha" placeholder="Senha" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Senha'" ng-required="true">
+										</div>
+									</div>
+
+									<div class="row mt-2">
+										<div class="col-sm-12">
+											<button type="submit" class="primary-btn mt-4 mr-3" ng-click="logarNoSistema(usuario)" ng-if="formLogin.$valid && !loading">Entrar<span class="lnr lnr-arrow-right"></span></button>
+											<button type="button" class="primary-btn mt-4 mr-3" ng-if="formLogin.$invalid && !loading">Entrar<span class="lnr lnr-arrow-right"></span></button>
+											<img src="web/imagens/basicloader.gif" class="img-fluid mx-auto d-block" ng-if="loading && !usuarioLogado">
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
